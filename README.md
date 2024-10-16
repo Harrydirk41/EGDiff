@@ -20,8 +20,8 @@ X-EnDiff integrates experimental measurements from NMR, SAXS,
 cryo-EM, and more to guide a pretrained diffusion-based protein ensemble sampler. 
 This approach enhances the sampler's ability to produce conformational 
 ensembles that align with experimental data while approximating the Boltzmann distribution. 
-The current implementation is built on Str2str, a recent protein ensemble diffusion sampler, 
-but can be adapted to other diffusion-based methods.
+The current implementation is built on [Str2str](https://github.com/lujiarui/Str2Str.git), a recently developed protein ensemble diffusion sampler, 
+but can be adapted to other diffusion-based models.
 
 <p align="center">
 <img src="assets/diffusion_plot_6-1.png" width="450"/>
@@ -31,10 +31,11 @@ The current model supports guiding the sampling process with end-to-end distance
 Additional, we provide preliminary models guiding with cryo-EM 2D density images:
 - End-to-end distance
 - Radius of gyration
-- Helix percent per residue
+- Helix percent per residue with distance operator
 - RMSD w.r.t the folded structure
 - Cryo-EM 2D density images (preliminary)
-- Beta percent per residue (in progress)
+- Helix percent per residue with RMSD operator (in progress)
+- Beta percent per residue with RMSD operator (in progress)
 
 
 

@@ -66,9 +66,12 @@ to load samples in conditional_GMM_use_prev_sample in 'configs/model/diffusion.y
 - To perform inference, a trained model checkpoint is required and can be specified using `ckpt_path=/path/to/checkpoint`. 
 A pretrained PyTorch checkpoint can be accessed from [Google Drive](https://drive.google.com/file/d/1YsvFXOpdst4QxK34GSWvLjgbvzUq4Ry8/view?usp=sharing). 
 Download and put it into `data/ckpt`.
-
 ```sh
 python src/eval.py task_name=inference ckpt_path=/path/to/some/checkpoint
+```
+- Optionally, to fix physical errors in the generate samples, you can run the following command:
+```sh
+python /path/to/X-EnDiff/scripts/run_pdb_fix.py /path/to/pdb_file --gpu_list=0,1 --temp_fix_dir=/path/to/X-EnDiff/data/temp_fix
 ```
 
 

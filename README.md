@@ -71,7 +71,7 @@ python src/eval.py task_name=inference ckpt_path=/path/to/some/checkpoint
 ```
 - Optionally, to fix physical errors in the generate samples, you can run the following command:
 ```sh
-python /path/to/X-EnDiff/scripts/run_pdb_fix.py /path/to/pdb_file --gpu_list=0,1 --temp_fix_dir=/path/to/X-EnDiff/data/temp_fix
+python /path/to/EGDiff/scripts/run_pdb_fix.py /path/to/pdb_file --gpu_list=0,1 --temp_fix_dir=/path/to/EGDiff/data/temp_fix
 ```
 
 

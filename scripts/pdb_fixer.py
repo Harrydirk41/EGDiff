@@ -6,7 +6,7 @@ import numpy as np
 import time
 import sys
 import argparse
-def pdb_fix(traj_name,temp_fix_dir = '/path/to/X-EnDiff/data/temp_fix'):
+def pdb_fix(traj_name,temp_fix_dir = '/path/to/EGDiff/data/temp_fix'):
     traj = md.load(traj_name)
     for i, frame in enumerate(traj):
         frame.save_pdb('{}/temp_{}.pdb'.format(temp_fix_dir,i))
@@ -27,7 +27,7 @@ def pdb_fix(traj_name,temp_fix_dir = '/path/to/X-EnDiff/data/temp_fix'):
 
 
 
-def create_openmm_script(pdb_file, gpu_index, base_directory="/path/to/X-EnDiff/data/temp_fix"):
+def create_openmm_script(pdb_file, gpu_index, base_directory="/path/to/EGDiff/data/temp_fix"):
     return f"""
 from simtk.openmm.app import *
 from simtk.openmm import *
@@ -78,7 +78,7 @@ protein_traj.save_pdb('{base_directory}/{pdb_file}')
 
 
 # Save the scripts to files
-def write_script(frame_num,gpu_list = [0,1,2,3],temp_fix_dir = '/path/to/X-EnDiff/data/temp_fix'):
+def write_script(frame_num,gpu_list = [0,1,2,3],temp_fix_dir = '/path/to/EGDiff/data/temp_fix'):
     for i in range(frame_num):
         gpu_index = gpu_list[i//len(gpu_list)]
         with open('{}/temp_{}.py'.format(temp_fix_dir, i), 'w') as f:
@@ -96,7 +96,7 @@ def run_subprocess(frame_num):
         p.wait()
 
 
-def merge(original_file_name,frame_num, base_directory="/path/to/X-EnDiff/data/temp_fix"):
+def merge(original_file_name,frame_num, base_directory="/path/to/EGDiff/data/temp_fix"):
     # Initialize a list to store the trajectories with only protein atoms
     protein_trajectories = []
 
@@ -131,7 +131,7 @@ def merge(original_file_name,frame_num, base_directory="/path/to/X-EnDiff/data/t
     new_A = f"{base_name}_fixed.{extension}"
     merged_protein_trajectory.save_pdb(new_A)
 
-def pdb_fix_all(original_file_name,gpu_list = [0],temp_fix_dir = '/path/to/X-EnDiff/data/temp_fix'):
+def pdb_fix_all(original_file_name,gpu_list = [0],temp_fix_dir = '/path/to/EGDiff/data/temp_fix'):
     num_frame = pdb_fix(original_file_name)
     write_script(frame_num=num_frame,gpu_list  = gpu_list,temp_fix_dir=temp_fix_dir)
     run_subprocess(num_frame)
@@ -149,9 +149,9 @@ if __name__ == "__main__":
     parser.add_argument('--gpu_list', type=str, default="0",
                         help="Comma-separated list of GPU indices (default is [0])")
 
-    # Optional argument: temp_fix_dir, default is '/path/to/X-EnDiff/data/temp_fix'
-    parser.add_argument('--temp_fix_dir', type=str, default='/path/to/X-EnDiff/data/temp_fix',
-                        help="Temporary fix directory (default is '/path/to/X-EnDiff/data/temp_fix')")
+    # Optional argument: temp_fix_dir, default is '/path/to/EGDiff/data/temp_fix'
+    parser.add_argument('--temp_fix_dir', type=str, default='/path/to/EGDiff/data/temp_fix',
+                        help="Temporary fix directory (default is '/path/to/EGDiff/data/temp_fix')")
 
     # Parse the arguments
     args = parser.parse_args()

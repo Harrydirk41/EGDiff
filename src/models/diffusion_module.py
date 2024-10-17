@@ -14,13 +14,10 @@ from src.common.pdb_utils import atom37_to_pdb, merge_pdbfiles
 import omegaconf
 import mdtraj as md
 import pickle
-from src.models.compute_dssp import get_hbond_map, rearrange, recover_backbone_atoms, new_dihedral
 from src.models.score import so3, r3
 from src.common.rigid_utils import Rigid, Rotation, quat_multiply
 from src.common import rotation3d
-import src.models.operator as moperator
-import src.models.dssp_operator_util as sss
-
+import src.models.operator.operator as moperator
 
 def expand_indices(indices):
     """
@@ -303,6 +300,7 @@ class DiffusionLitModule(LightningModule):
                                                                  resolve=True)
         protein_name_infer = self.hparams.inference.protein_name
         use_pickle = self.hparams.inference.use_save_pickle
+        save_pickle_loc = self.hparams.inference.save_pickle_loc
         conditional_operator_list = [
             omegaconf.OmegaConf.to_container(self.hparams.inference.conditional_multi_operator,
                                              resolve=True)[i] for i in multi_operator_choice]
@@ -405,17 +403,11 @@ class DiffusionLitModule(LightningModule):
                             as_tensor_7=True,
                         )['rigids_t']
                     else:
-                        if use_prior:
-                            rigids_t = np.load(save_prior_loc)
-                            rigids_t = torch.from_numpy(rigids_t).to(device)
-                        else:
-                            rigids_t = self.diffuser.sample_prior(
+                        rigids_t = self.diffuser.sample_prior(
                                 shape=rigids_0.shape,
                                 device=device,
                                 as_tensor_7=True,
                             )['rigids_t']
-                        if save_prior:
-                            np.save(save_prior_loc, rigids_t.detach().cpu().numpy())
                     _feats['rigids_t'] = rigids_t
                     print("rigids_t", rigids_t)
                     traj_atom37 = []
@@ -483,7 +475,6 @@ class DiffusionLitModule(LightningModule):
                                     num_step=_num_timesteps,
                                     T=T,
                                     ts=ts,
-                                    multi_operator=multi_operator_flag,
                                     samples=samples,
                                     set_grad_flag=temp_set_grad_flag,
                                 )  # Rigid object

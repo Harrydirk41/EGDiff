@@ -204,6 +204,7 @@ class R3Diffuser:
         alphas_cumprod = torch.cumprod(alphas, dim=0)
         with torch.enable_grad():
             x_t = self.scale(x_t)
+            #print(x_t.requires_grad)
             timestep = (t * (N - 1) / T).long()
             alpha_t = alphas_cumprod.to(x_t.device)[timestep]
             one_minus_alpha_t = 1 - alpha_t
@@ -222,7 +223,8 @@ class R3Diffuser:
             for num_i in range(len(conditional_operator)):
                 y_value_list[num_i] = torch.from_numpy(samples[num_i]).to(device=x_t.device,
                                                                           dtype=torch.float32)
-                A_value_list[num_i] = conditional_operator[num_i](y_value_list[num_i], x0_unscale)
+                A_value_list[num_i] = conditional_operator[num_i](x0_unscale)
+                len_list[num_i + 1] = len_list[num_i] + y_value_list[num_i].shape[-1]
             if len(conditional_operator) == 1:
                 y_value = y_value_list[0]
                 A_x0 = A_value_list[0]
@@ -236,11 +238,11 @@ class R3Diffuser:
                 weight[int(len_list[num_op]):int(len_list[num_op + 1])] = torch.ones(
                     int(len_list[num_op + 1]) - int(len_list[num_op])).to(x_t.device) * conditional_multi_noise[
                                                                               num_op]
-                norm = norm * weight
-                if len(norm.shape) == 1:
-                    norm_sqrt = norm.sqrt()
-                elif len(norm.shape) == 2:
-                    norm_sqrt = torch.sum(norm, dim=-1).sqrt()
+            norm = norm * weight
+            if len(norm.shape) == 1:
+                norm_sqrt = norm.sqrt()
+            elif len(norm.shape) == 2:
+                norm_sqrt = torch.sum(norm, dim=-1).sqrt()
 
             norm_sqrt = torch.where(norm_sqrt == 0, torch.tensor(1.0, device=norm_sqrt.device), norm_sqrt)
             norm_final = norm.sum()

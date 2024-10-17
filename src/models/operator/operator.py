@@ -16,8 +16,6 @@ from src.common.pdb_utils import atom37_to_pdb, merge_pdbfiles
 import omegaconf
 import mdtraj as md
 import pickle
-from src.models.compute_dssp import get_hbond_map, rearrange, recover_backbone_atoms, new_dihedral
-
 from src.models.score import so3, r3
 from src.common.rigid_utils import Rigid, Rotation, quat_multiply
 from src.common import rotation3d

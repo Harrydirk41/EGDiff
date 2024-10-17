@@ -173,7 +173,6 @@ class FrameDiffuser:
             T=1,
             ts = None,
             samples = None,
-            multi_operator = False,
             set_grad_flag=False,
     ):
         """Reverse sampling function from (t) to (t-1).
@@ -221,7 +220,6 @@ class FrameDiffuser:
             N=num_step,
             T=T,
             ts=ts,
-            multi_operator=multi_operator,
             samples = samples
         ) if self.trans_diffuser is not None else trans_t
 

@@ -7,6 +7,9 @@ max_epochs: 10
 
 accelerator: cpu
 devices: 1
+#accelerator: gpu
+#devices: 4
+inference_mode: False
 
 # mixed precision for extra speed-up
 # precision: 16

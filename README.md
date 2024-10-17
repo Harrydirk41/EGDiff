@@ -1,7 +1,7 @@
 
 <div align="center">
 
-# X-EnDiff:  An Experiment-Guided Diffusion model for protein conformational ensemble
+# EGDiff:  An Experiment-Guided Diffusion model for protein conformational ensemble
 
 <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
 <a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
@@ -15,8 +15,8 @@
 
 
 This repository contains the official implementation of the paper 
-"X-EnDiff: An Experiment-Guided Diffusion Model for Protein Conformational Ensembles." 
-X-EnDiff integrates experimental measurements from NMR, SAXS, 
+"EGDiff: An Experiment-Guided Diffusion Model for Protein Conformational Ensembles." 
+EGDiff integrates experimental measurements from NMR, SAXS, 
 cryo-EM, and more to guide a pretrained diffusion-based protein ensemble sampler. 
 This approach enhances the sampler's ability to produce conformational 
 ensembles that align with experimental data while approximating the Boltzmann distribution. 
@@ -41,8 +41,8 @@ Additional, we provide preliminary models guiding with cryo-EM 2D density images
 
 ## Installation
 ```sh
-git clone https://github.com/Harrydirk41/X-EnDiff.git
-cd X-EnDiff
+git clone https://github.com/Harrydirk41/EGDiff.git
+cd EGDiff
 
 # Create conda environment.
 conda env create -f environment.yml
@@ -54,9 +54,9 @@ pip install -e .
 ## Inference
 
 There are a few steps to follow before running the sampling: 
-- Put the PDB file of the folded protein structure (either from PDB, Alphafold, ESMfold) into '/path/to/X-EnDiff/data/folded_structure'.
+- Put the PDB file of the folded protein structure (either from PDB, Alphafold, ESMfold) into '/path/to/EGDiff/data/folded_structure'.
 The PDB file serves both as the condition structure for Str2str and the reference structure for RMSD operator.
-- Put experiment measurement samples into '/path/to/X-EnDiff/data'. 
+- Put experiment measurement samples into '/path/to/EGDiff/data'. 
 - In 'configs/model/diffusion.yaml', change protein_name and multi_operator_choice to indicate which operator(s) to use for guiding the
 sampling process. Additionally, change conditional_noise and conditional_multi_noise to control the guiding strength.
 - To perform inference, a trained model checkpoint is required and can be specified using `ckpt_path=/path/to/checkpoint`. 

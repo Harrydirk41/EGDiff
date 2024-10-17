@@ -55,13 +55,17 @@ pip install -e .
 
 There are a few steps to follow before running the sampling: 
 - Put the PDB file of the folded protein structure (either from PDB, Alphafold, ESMfold) into '/path/to/EGDiff/data/folded_structure'.
-The PDB file serves both as the condition structure for Str2str and the reference structure for RMSD operator.
-- Put experiment measurement samples into '/path/to/EGDiff/data'. 
+The PDB file serves both as the condition structure for Str2str and the reference structure for RMSD operator. 
+- Put experiment measurement samples into '/path/to/EGDiff/data/experiment_samples'. The samples can be saved as a direct 'protein_name/.npy' file or as a pickle file savingGaussian
+Mixture Model's parameters in 'path/to/EGDiff/data/GMM_save_list'. An example of the pickle file including end-to-end distance, radius of gyration, and RMSD is provided.
 - In 'configs/model/diffusion.yaml', change protein_name and multi_operator_choice to indicate which operator(s) to use for guiding the
-sampling process. Additionally, change conditional_noise and conditional_multi_noise to control the guiding strength.
+sampling process. Additionally, change conditional_noise and conditional_multi_noise to control the guiding strength. 
+- For other customized operators,
+put the operator function in "/path/to/EGDiff/src/models/operator/operator.py", and indicate whether to use GMM pickle (0) or npy file (1)
+to load samples in conditional_GMM_use_prev_sample in 'configs/model/diffusion.yaml'.
 - To perform inference, a trained model checkpoint is required and can be specified using `ckpt_path=/path/to/checkpoint`. 
 A pretrained PyTorch checkpoint can be accessed from [Google Drive](https://drive.google.com/file/d/1YsvFXOpdst4QxK34GSWvLjgbvzUq4Ry8/view?usp=sharing). 
-Download and put it into `data/ckpt`. 
+Download and put it into `data/ckpt`.
 
 ```sh
 python src/eval.py task_name=inference ckpt_path=/path/to/some/checkpoint
